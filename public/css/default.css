@@ -1,0 +1,134 @@
+.header{
+  height: 80px;
+  line-height: 80px;
+}
+.Atte_text {
+  font-size: 28px;
+  padding-left: 40px;
+
+}
+
+.main {
+  background: #F5F5F5;
+  text-align: center;
+}
+
+.top_text {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+@media screen and (min-width: 481px){
+  .top_text{
+    padding-top: 80px;
+  }
+
+}
+
+.input_box {
+  margin: 20px;
+}
+@media screen and (min-width: 481px){
+  .input_box{
+    margin: 25px;
+  }
+}
+
+input.input {
+  border: 2px #808080 solid;
+  width: 210px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: bold;
+  padding-left: 15px;
+  border-radius: 5px;
+  background: #F5F5F5;
+  color: #000000;
+}
+@media screen and (min-width: 481px) {
+  input.input {
+    width: 320px;
+    height: 40px;
+    font-size: 15px;
+  }
+}
+.input::placeholder{
+  color: #b8b8b8;
+}
+
+.login_button {
+  color: #ffffff;
+  background: #1048c6;
+  border-color: transparent;
+  width: 230px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 12px;
+  font-weight: bold;
+}
+@media screen and (min-width: 481px) {
+  .login_button{
+    width: 340px;
+    height: 45px;
+    font-size: 15px;
+  }
+}
+
+.bottom_text {
+  color: #b8b8b8;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 30px 0px 0px 0px;
+}
+@media screen and (min-width: 481px){
+  .bottom_text{
+    font-size: 15px;
+  }
+}
+
+.create_User {
+  padding-bottom: 127px;
+  padding-top: 0px;
+  line-height: 25px;
+}
+@media screen and (min-width: 481px) {
+  .create_User {
+    padding-bottom: 220px;
+    font-size: 15px;
+    font-weight: bolder;
+    line-height: 35px;
+  }
+}
+
+.create_User_link {
+  text-decoration: none;
+  font-size: 12px;
+}
+@media screen and (min-width: 481px){
+  .create_User_link {
+  font-size: 15px;
+  }
+}
+.create_User_link:link {
+  color: #1048c6;
+}
+
+.create_User_link:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  font-size: 10px;
+  font-weight: bolder;
+}
+@media screen and (min-width: 481px){
+  .footer{
+    font-size: 12px;
+  }
+
+}
