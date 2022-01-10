@@ -17,10 +17,9 @@ class LoginMiddleware
     public function handle(Request $request, Closure $next)
     {
         //セッションにnameがあれば打刻ページ表示
-        if (!session()->has('password')) {
+        if (!session()->has('name')) {
             return redirect(url('/'));
         }
-        
 
         return $next($request);
     }

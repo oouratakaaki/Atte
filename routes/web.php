@@ -5,8 +5,8 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\RestConrtoller;
-use App\Http\Middleware\Authenticate;
+use App\Http\Controllers\RestController;
+use App\Http\Middleware\LoginMiddleware;
 use App\Http\Middleware\RedirectIfAuthenticated;
 
 /*
@@ -30,22 +30,13 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 |
 */
 
-/*
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
-*/
 
 
-Route::get('/', [IndexController::class, 'index'])->middleware(Authenticate::class);
-Route::get('/attendance/start', [IndexController::class, 'startAttendance']);
+
+Route::get('/', [IndexController::class, 'index'])->middleware(LoginMiddleware::class);
+
+Route::get('/attendamce/start', [IndexController::class, 'startAttendance']); //->middleware(LoginMiddleware::class);
+Route::get('/attendance/end', [IndexController::class, 'endAttendance']);
 
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'registUser']);
@@ -53,9 +44,9 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginUser'])->name('loginUser');
 
 
-Route::get('/logout', [AuthController::class, 'logout'])->middleware(Authenticate::class);
+Route::get('/logout', [AuthController::class, 'logout'])->middleware(LoginMiddleware::class);
 //Route::get('/attendance/start', [AttendanceController::class, 'startAttendance']);
-Route::get('/attendance/end', [AttendanceConrtoller::class, 'endAttendance']);
+//Route::get('/attendance/end', [AttendanceConrtoller::class, 'endAttendance']);
 Route::get('/attendance/{num}', [AttendanceConrtoller::class, 'pageAttendance']);
-Route::get('/break/start', [RestConrtoller::class, 'startRest']);
-Route::get('/break/end', [RestConrtoller::class, 'endRest']);
+Route::get('/break/start', [RestController::class, 'startRest']);
+Route::get('/break/end', [RestController::class, 'endRest']);

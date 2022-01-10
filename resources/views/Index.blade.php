@@ -29,25 +29,37 @@
     </nav>
   </header>
   <main class="main">
-    <p class="top_text index">{{session('name')}}さんお疲れ様です！</p>
+    <p class="top_text index">{{session('name')}}{{session('attendance_id')}}さんお疲れ様です！</p>
+    @if(session('error'))
+    <p>{{session('error')}}</p>
+    @elseif(session('start'))
+    <p>{{session('start')}}</p>
+    @elseif(session('end'))
+    <p>{{session('end')}}</p>
+    @endif
     @csrf
     <ul class="button_flex">
       <li class="start atte">
-        <form action="" method="get">
-          <button type="submit" class="button" name="start_attendance" value="">勤務開始</button>
+        <form action='/attendamce/start' method="get">
+          <button type="submit" class="button" value="">勤務開始</button>
         </form>
       </li>
       <li class="end atte">
-        <button type="submit" class="button" value="">勤務終了</button>
+        <form action='/attendance/end' method="get">
+          <button type="submit" class="button" value="">勤務終了</button>
+        </form>
       </li>
       <li class="start rest">
-        <button type="submit" class="button" value="">休憩開始</button>
+        <form action='/break/start' method="get">
+          <button type="submit" class="button" value="">休憩開始</button>
+        </form>
       </li>
       <li class="end rest">
-        <button type="submit" class="button" value="">休憩終了</button>
+        <form action='/break/end' method="get">
+          <button type="submit" class="button" value="">休憩終了</button>
+        </form>
       </li>
     </ul>
-
   </main>
   <footer class="footer">
     <p class="footer_text">Atte,inc.</p>

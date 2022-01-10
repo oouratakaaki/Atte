@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use App\Models\User;
-//use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -20,9 +21,9 @@ class AuthController extends Controller
 
 
     /**
-     * @param App\Http\Requests\LoginFormRequest
+     * @param App\Http\Requests\LoginRequest
      */
-    /**
+
     public function loginUser(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->get();
@@ -36,48 +37,21 @@ class AuthController extends Controller
             session(['id'  => $user[0]->id]);
             session(['name'  => $user[0]->name]);
             session(['email' => $user[0]->email]);
-
             return redirect('/');
         } else {
             return view('login');
         }
-
-    }
-    */
-    /**
-     * 認証の試行を処理
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function loginUser(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-
-            return redirect('/');
-        }
-
-        return back();
     }
 
 
 
-    public function logout(Request $request)
+    public function logout()
     {
-        //session()->flash('name');
-        //session()->flash('email');
-        Auth::logout();
+        session()->flash('id');
+        session()->flash('name');
+        session()->flash('email');
+        
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
 
         return redirect('login');
     }
