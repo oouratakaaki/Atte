@@ -9,63 +9,50 @@ use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Http\Controllers\IndexController;
 
+
+use Illuminate\Support\Arr;
+
+
 class RestController extends Controller
 {
-
-    public function index()
+    //attendance_id取得
+    public function atte_id()
     {
-        return view('index');
-    }
-
-
-    public function checkRest()
-    {
-        $user_id = session()->get('id');
         $today = Carbon::today()->format('Y-m-d');
-        $checkRest = attendance::where('user_id', $user_id)->whereDate('end_attendance',$today)->latest()->first();
-        
-        return $checkRest;
-        
+        [$keys, $values] = Arr::divide(Attendance::where('user_id', session()->get('id'))->latest()
+->first()->toArray());
+        $atte_id = $values[0];
+        return $atte_id;
     }
 
+    //end_restにNULLがあるか
+    public function endRestCheck()
+    {
+        $atte_id = $this->atte_id();
+        $endRestCheck = Rest::where('attendance_id', $atte_id)->latest()->whereNull('end_rest')->first();
+        return $endRestCheck;
+    }
 
-    /**
-     *  checkAtte App\Http\Controllers\IndexController
-     */
+    //休憩開始
     public function startRest()
     {
-        $user_id = session()->get('id');
-        $today = Carbon::today()->format('Y-m-d');
-
-
-        $called = app()->make('App\Http\Controllers\IndexController');
-        $checkAtte = $called ->checkAtte();
-
-        $checkRest = $this->checkRest();
-        var_dump($checkRest);
-        //exit();
-
-
-
-
-
-
-        if (is_null(($checkAtte))) {
-            return redirect()->back()->with('error', '勤務開始して下さい');
-        } elseif (is_null($checkRest)) {
-            return redirect()->back()->with('error', '休憩を終了して下さい');
-        } else {
-            Rest::create([
-                'attendance_id' => ,
-                'start_rest' => Carbon::now()->format('Y-m-d h:i:s'),
-            ]);
-
-        return redirect()->back()->with('error', '休憩開始しました');
-        }
+        //attendance_id取得
+        $atte_id = $this -> atte_id();
+//dd($atte_id);
+        Rest::create([
+                'attendance_id' => $atte_id,
+                'start_rest' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        return redirect()->back();
     }
 
+    //休憩終了
     public function endRest()
     {
+        //attendance_id取得
+        $atte_id = $this->atte_id();
+
+        Rest::where('attendance_id',$atte_id)->latest()->first()->update(['end_rest' => Carbon::now()->format('Y-m-d H:i:s')]);
         return redirect()->back();
     }
 }

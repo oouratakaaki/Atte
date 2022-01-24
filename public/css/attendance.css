@@ -1,4 +1,10 @@
 
+@media screen and (min-width: 481px) {
+  .main{
+    min-width: 800px;
+  }
+
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -44,6 +50,12 @@
 .index{
   font-size: 15px;
 }
+input[type="date"]::-webkit-datetime-edit-fields-wrapper{
+  -webkit-appearance: none;
+}
+input[type="date"]::-webkit-clear-button{
+  -webkit-appearance: none;
+}
 @media screen and (min-width: 481px){
   .index {
     font-size: 20px;
@@ -53,23 +65,30 @@
 
 .table{
   margin: 10px auto;
+  width: 90%;
 
 }
 .list {
   border-top: 1px solid #000000;
 }
-.item {
-  padding-right: 5px;
+
+.item:first-child{
   text-align: left;
+}
+.item {
+  align-items: center;
+  padding-right: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 12px;
+  white-space: nowrap;
 }
 @media screen and (min-width: 481px)
 {
   .item{
+    align-items: center;
     font-size: 18px;
-    padding: 27px 70px;
+    padding: 27px 5vw;
   }
 }
 

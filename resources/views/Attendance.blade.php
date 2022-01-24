@@ -31,7 +31,8 @@
   <main class="main">
     <form action="" method="get">
       @csrf
-      <p class="top_text index">{{"日付取得"}}</p>
+      <input type="submit" name="calendar[2020-09*2020-10-24]" value="<<">
+      <p class="top_text index">{{$days}}</p>
       <table class="table">
         <tr class="list">
           <th class="item">名前</th>
@@ -41,88 +42,36 @@
           <th class="item">勤務時間</th>
         </tr>
         <!-- @ foreachディレクティブを使用する -->
+        @foreach ($items as $item)
         <tr class="list">
+
           <td class="item">
-            {テスト太郎}
+            {{$item->user->name}}
           </td>
           <td class="item_time">
-            {time}
+            {{$item->atteStartTime()}}
           </td>
+
           <td class="item_time">
-            {time}
+            {{$item->atteEndTime()}}
+
           </td>
+          @if(isset($item->rests))
           <td class="item_time">
-            {time}
           </td>
+          @else
           <td class="item_time">
-            {time}
+            {{$item->rests}}
           </td>
-        <tr class="list">
-          <td class="item">
-            {テスト太郎}
-          </td>
+          @endif
           <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-        <tr class="list">
-          <td class="item">
-            {テスト太郎}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-        <tr class="list">
-          <td class="item">
-            {テスト太郎}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-        <tr class="list">
-          <td class="item">
-            {テスト太郎}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
-          </td>
-          <td class="item_time">
-            {time}
+            {{$item->getAtte()}}
           </td>
         </tr>
+        @endforeach
       </table>
+
+
       <div class="page">
         <p>ページネーション</p>
       </div>

@@ -47,9 +47,9 @@ class User extends Model
         'email_verified_at' => 'datetime',
     ];
 
-    public function attendance()
+    public function Attendance()
     {
-        return $this->hasMany(attendamce::class);
+        return $this->hasOne(Attendance::class);
     }
 
 }

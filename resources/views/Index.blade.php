@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{url('css/reset.css')}}">
   <link rel="stylesheet" href="{{url('css/default.css')}}">
   <link rel="stylesheet" href="{{url('css/index.css')}}">
+
 </head>
 
 <body>
@@ -20,7 +21,7 @@
           <a href="http://127.0.0.1:8000/" class="header_link">ホーム</a>
         </li>
         <li class="header_nav_item">
-          <a href="" class="header_link">日付一覧</a>
+          <a href="http://127.0.0.1:8000/attendance/{num}" class="header_link">日付一覧</a>
         </li>
         <li class="header_nav_item">
           <a href="logout" class="header_link">ログアウト</a>
@@ -29,35 +30,52 @@
     </nav>
   </header>
   <main class="main">
-    <p class="top_text index">{{session('name')}}{{session('attendance_id')}}さんお疲れ様です！</p>
-    @if(session('error'))
-    <p>{{session('error')}}</p>
-    @elseif(session('start'))
-    <p>{{session('start')}}</p>
-    @elseif(session('end'))
-    <p>{{session('end')}}</p>
-    @endif
+    <p class="top_text index">{{session('name')}}さんお疲れ様です！</p>
     @csrf
     <ul class="button_flex">
       <li class="start atte">
-        <form action='/attendamce/start' method="get">
+        @if($startAtte === 1)
+        <button class="button" disabled>勤務開始</button>
+        @elseif($startAtte === 0)
+        <form action='/attendance/start' method="get">
           <button type="submit" class="button" value="">勤務開始</button>
         </form>
+        @else
+        <button class="button" disabled>勤務開始</button>
+        @endif
       </li>
       <li class="end atte">
+        @if($startAtte === 0 or $endAtte === 1)
+        <button type="submit" class="button" disabled>勤務終了</button>
+        @else
         <form action='/attendance/end' method="get">
           <button type="submit" class="button" value="">勤務終了</button>
         </form>
+        @endif
       </li>
       <li class="start rest">
-        <form action='/break/start' method="get">
+        @if($startAtte === 1 && $endAtte === 1)
+        <button type="submit" class="button" disabled>休憩開始</button>
+        @elseif($startAtte === 0 && $endAtte === 1)
+        <button type="submit" class="button" disabled>休憩開始</button>
+        @else
+        <form action='/rest/start' method="get">
           <button type="submit" class="button" value="">休憩開始</button>
         </form>
+        @endif
       </li>
       <li class="end rest">
-        <form action='/break/end' method="get">
+        @if($startAtte === 1 && $endAtte === 1 && $startRest === 1)
+        <form action='/rest/end' method="get">
           <button type="submit" class="button" value="">休憩終了</button>
         </form>
+        @elseif($startAtte === 1 && $endAtte === 1)
+        <button type="submit" class="button" disabled>休憩終了</button>
+        @elseif($startAtte === 0 && $endAtte === 1)
+        <button type="submit" class="button" disabled>休憩終了</button>
+        @else($startAtte === 1 && $endAtte === 0)
+        <button type="submit" class="button" disabled>休憩終了</button>
+        @endif
       </li>
     </ul>
   </main>

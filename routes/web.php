@@ -34,9 +34,10 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 
 
 Route::get('/', [IndexController::class, 'index'])->middleware(LoginMiddleware::class);
+//Route::get('', [RestController::class, 'atte_id'])->middleware(LoginMiddleware::class);
 
-Route::get('/attendamce/start', [IndexController::class, 'startAttendance']); //->middleware(LoginMiddleware::class);
-Route::get('/attendance/end', [IndexController::class, 'endAttendance']);
+Route::get('/attendance/start', [IndexController::class, 'startAttendance'])->middleware(LoginMiddleware::class);
+Route::get('/attendance/end', [IndexController::class, 'endAttendance'])->middleware(LoginMiddleware::class);
 
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'registUser']);
@@ -45,8 +46,6 @@ Route::post('/login', [AuthController::class, 'loginUser'])->name('loginUser');
 
 
 Route::get('/logout', [AuthController::class, 'logout'])->middleware(LoginMiddleware::class);
-//Route::get('/attendance/start', [AttendanceController::class, 'startAttendance']);
-//Route::get('/attendance/end', [AttendanceConrtoller::class, 'endAttendance']);
-Route::get('/attendance/{num}', [AttendanceConrtoller::class, 'pageAttendance']);
-Route::get('/break/start', [RestController::class, 'startRest']);
-Route::get('/break/end', [RestController::class, 'endRest']);
+Route::get('/attendance/{num}', [AttendanceController::class, 'pageAttendance'])->middleware(LoginMiddleware::class);;
+Route::get('/rest/start', [RestController::class, 'startRest'])->middleware(LoginMiddleware::class);
+Route::get('/rest/end', [RestController::class, 'endRest'])->middleware(LoginMiddleware::class);

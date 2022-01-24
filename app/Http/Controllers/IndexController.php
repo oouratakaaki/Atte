@@ -7,81 +7,96 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Carbon\Carbon;
 
-
 class IndexController extends Controller
 {
-    public function index()
-    {
-        return view('index');
-    }
 
     //当日の勤務開始があるかどうか
     public function checkAtte()
     {
-        $user_id = session()->get('id');
-
         $today = Carbon::today()->format('Y-m-d');
-        $todayAttendance = Attendance::where('user_id', $user_id)->whereDate('start_attendance',$today)->latest()->first();
-        return $todayAttendance;
+        $checkAtte = Attendance::where('user_id', session('id'))->whereDate('start_attendance', $today)->latest()->first();
+        return $checkAtte;
     }
-    //当日の勤務があるかどうか->最後の勤怠打刻データに勤務終了データがあるかどうか
+
+    //最後の勤怠打刻データに勤務終了データがあるかどうか
     public function checkAtte_end()
     {
-        $user_id = session()->get('id');
         $today_end = Carbon::today()->format('Y-m-d');
-        $check = Attendance::where('user_id',$user_id)->whereDate('end_attendance', $today_end)->latest()->first();
-        return $check;
+        $checkAtte_end = Attendance::where('user_id', session('id'))->whereDate('end_attendance', $today_end)->latest()->first();
+        return $checkAtte_end;
+    }
+
+    public function index()
+    {
+        //今日の日付取得
+        $today = Carbon::today()->format('Y-m-d');
+        //当日の勤怠開始取得
+        $checkAtte = $this->checkAtte();
+        //勤怠終了にNULLがあるか
+        $checkAtte_end_Null = Attendance::where('user_id', session('id'))->whereNull('end_attendance')->first();
+        //勤怠終了にNULLがないか
+        $checkAtte_end_notNull = Attendance::where('user_id', session('id'))->whereNotNull('end_attendance')->first();
+
+        $checkAtte_end = Attendance::where('user_id', session('id'))->whereDate('end_attendance', $today)->latest()->first();
+
+        if(isset($checkAtte_end_Null)){//最後の勤怠終了データがない
+            //end_restにNULLがあるか
+            $endRestCheck = app()->make('App\Http\Controllers\RestController');
+            $endRestCheck = $endRestCheck->endRestCheck();
+
+            if (isset($endRestCheck)) {//休憩開始が押されていれば休憩終了ボタンON
+                $startAtte = 1;
+                $endAtte = 1;
+                $startRest = 1;
+                return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte)->with('startRest', $startRest);
+            }elseif(isset($checkAtte_end_Null)){//休憩開始がなければ休憩開始開始と勤務終了ボタンON
+                $startAtte = 1;
+                $endAtte = 0;
+                return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte);
+            }else{//勤怠終了が押されて当日の勤怠開始があれば全てのボタンOFF
+                $startAtte = 1;
+                $endAtte = 1;
+                return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte);
+                }
+        }elseif(isset($checkAtte)){//当日の勤怠開始データがある
+            if(isset($checkAtte) && isset($checkAtte_end_notNull)){ //当日の勤怠開始データと勤怠終了の最終データがあるなら全てのボタンをOFF
+                $startAtte = 1;
+                $endAtte = 1;
+                $startRest = 0;
+                return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte)->with('startRest', $startRest);
+            }
+            //勤怠終了がなければ終了
+            $startAtte = 1;
+            $endAtte = 0;
+            return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte);
+        }else{//当日の勤怠開始がなければ勤怠開始
+            $startAtte = 0;
+            $endAtte = 1;
+
+            return view('index')->with('startAtte', $startAtte)->with('endAtte', $endAtte);
+        }
     }
 
 
-    //当日の打刻がなければ勤怠開始
+    //勤怠開始
     public function startAttendance()
     {
-        $user_id = session()->get('id');
-
-        $today = Carbon::today()->format('Y-m-d');
-        $checkAtte = $this -> checkAtte();
-
-        //当日の勤怠を開始してるなら、勤怠開始ボタンを押すとエラー
-        if ($today = $checkAtte) {
-            return redirect()->back()->with('error', '勤務開始済みです');
-        }
-
-        //当日の打刻がなければ勤怠開始
-        Attendance::create([
-            'user_id' => $user_id,
-            'start_attendance' => Carbon::now()->format('Y-m-d h:i:s'),
-        ]);
-    return redirect()->back()->with('start', '勤務開始しました');
+            Attendance::create([
+                'user_id' => session('id'),
+                'start_attendance' => Carbon::now()->format('Y-m-d H:i:s'),
+                //昨日の日付を保存
+                //'start_attendance' => Carbon::yesterday(),
+            ]);
+            return redirect()->back();
     }
 
 
-
+    //勤務終了
     public function endAttendance()
     {
-        $today = Carbon::today()->format('Y-m-d');
-        $check = $this->checkAtte_end();
-        $checkAtte = $this -> checkAtte();
+        Attendance::where('user_id', session('id'))->latest()->first()->update(['end_attendance' => Carbon::now()->format('Y-m-d H:i:s')]);
 
-        //勤怠開始がなければエラー
-        //最後の勤怠データに勤務終了データがなければ勤務終了
-        //今日の勤怠を開始しているなら、勤怠終了ボタンで打刻
-        if(is_null(($checkAtte))){
-            return redirect()->back()->with('error', '勤務開始して下さい');
-        }elseif($today = $check){
-            return redirect()->back()->with('error', '勤務終了済です');
-        }else{
-            $checkAtte->update([
-            'end_attendance' => Carbon::now()->format('Y-m-d h:i:s')
-        ]);
-            return redirect()->back()->with('end', '勤務終了');
-    }
-
-
-
-
-        
-
+            return redirect()->back();
     }
 
 

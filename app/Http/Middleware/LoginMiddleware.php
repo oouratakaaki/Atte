@@ -18,7 +18,7 @@ class LoginMiddleware
     {
         //セッションにnameがあれば打刻ページ表示
         if (!session()->has('name')) {
-            return redirect(url('/'));
+            return redirect(url('login'));
         }
 
         return $next($request);

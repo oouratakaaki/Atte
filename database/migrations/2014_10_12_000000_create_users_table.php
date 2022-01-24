@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 255)->nullable(false);
             $table->string('password', 255)->nullable(false);
             $table->timestamp('created_at')->useCurrent()->nullable();
-            $table->timestamp('updated_at');
+            $table->timestamp('updated_at')->useCurrent()->nullable();;
         });
     }
 
