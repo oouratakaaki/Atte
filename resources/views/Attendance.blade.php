@@ -44,10 +44,6 @@
         </form>
       </div>
 
-      </td>
-      <td>
-
-      </td>
     </table>
     </form>
     <table class="table">
