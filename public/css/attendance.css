@@ -46,9 +46,13 @@
 .header_link:link {
   color: #000000;
 }
-
+.button_left{
+  text-align: right;
+}
 .index{
+  text-align: center;
   font-size: 15px;
+
 }
 input[type="date"]::-webkit-datetime-edit-fields-wrapper{
   -webkit-appearance: none;

@@ -43,6 +43,7 @@ class User extends Model
      *
      * @var array<string, string>
      */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -51,6 +52,10 @@ class User extends Model
     {
         return $this->hasOne(Attendance::class);
     }
-
+    public function name()
+    {
+        $name = $this->name;
+        return  $name;
+    }
 }
 

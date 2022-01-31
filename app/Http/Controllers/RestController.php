@@ -52,7 +52,7 @@ class RestController extends Controller
         //attendance_id取得
         $atte_id = $this->atte_id();
 
-        Rest::where('attendance_id',$atte_id)->latest()->first()->update(['end_rest' => Carbon::now()->format('Y-m-d H:i:s')]);
+        Rest::where('attendance_id',$atte_id)->whereNull('end_rest')->update(['end_rest' => Carbon::now()->format('Y-m-d H:i:s')]);
         return redirect()->back();
     }
 }

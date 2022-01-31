@@ -20,62 +20,65 @@
           <a href="http://127.0.0.1:8000/" class="header_link">ホーム</a>
         </li>
         <li class="header_nav_item">
-          <a href="" class="header_link">日付一覧</a>
+          <a href="http://127.0.0.1:8000/attendance/{num}" class="header_link">日付一覧</a>
         </li>
         <li class="header_nav_item">
-          <a href="" class="header_link">ログアウト</a>
+          <a href="/logout" class="header_link">ログアウト</a>
         </li>
       </ul>
     </nav>
   </header>
   <main class="main">
-    <form action="" method="get">
-      @csrf
-      <input type="submit" name="calendar[2020-09*2020-10-24]" value="<<">
-      <p class="top_text index">{{$days}}</p>
-      <table class="table">
-        <tr class="list">
-          <th class="item">名前</th>
-          <th class="item">勤務開始</th>
-          <th class="item">勤務終了</th>
-          <th class="item">休憩時間</th>
-          <th class="item">勤務時間</th>
-        </tr>
-        <!-- @ foreachディレクティブを使用する -->
-        @foreach ($items as $item)
-        <tr class="list">
+    @csrf
+    <table class="table">
 
-          <td class="item">
-            {{$item->user->name}}
-          </td>
-          <td class="item_time">
-            {{$item->atteStartTime()}}
-          </td>
-
-          <td class="item_time">
-            {{$item->atteEndTime()}}
-
-          </td>
-          @if(isset($item->rests))
-          <td class="item_time">
-          </td>
-          @else
-          <td class="item_time">
-            {{$item->rests}}
-          </td>
-          @endif
-          <td class="item_time">
-            {{$item->getAtte()}}
-          </td>
-        </tr>
-        @endforeach
-      </table>
-
-
-      <div class="page">
-        <p>ページネーション</p>
+      <div class="top_text index">
+        <form style="display: inline" action="" method="get">
+          <input type="hidden" class="button" name="day" value="{{$day}}">
+          <input type="submit" class="button" name="back" value="<">
+        </form>
+        {{$day}}
+        <form style="display: inline" action="" method="get">
+          <input type="hidden" class="button" name="day" value="{{$day}}">
+          <input type="submit" class="button" name="next" value=">">
+        </form>
       </div>
+
+      </td>
+      <td>
+
+      </td>
+    </table>
     </form>
+    <table class="table">
+      <tr class="list">
+        <th class="item">名前</th>
+        <th class="item">勤務開始</th>
+        <th class="item">勤務終了</th>
+        <th class="item">休憩時間</th>
+        <th class="item">勤務時間</th>
+      </tr>
+      @foreach ($items as $item)
+      <tr class="list">
+        <td class="item">{{$item->user->name()}}</td>
+        <td class="item_time">{{$item->atteStartTime()}}</td>
+        <td class="item_time">{{$item->atteEndTime()}}</td>
+        <td class="item_time">{{$item->restTime()}}</td>
+        <td class="item_time">{{$item->totalAtte()}}</td>
+      </tr>
+      @endforeach
+    </table>
+
+    <div class="page">
+      <style>
+        svg.w-5.h-5 {
+          width: 30px;
+          height: 30px;
+        }
+      </style>
+      <p> {{$items->links()}} </p>
+    </div>
+
 
 
   </main>

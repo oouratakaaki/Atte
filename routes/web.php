@@ -34,17 +34,12 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 
 
 Route::get('/', [IndexController::class, 'index'])->middleware(LoginMiddleware::class);
-//Route::get('', [RestController::class, 'atte_id'])->middleware(LoginMiddleware::class);
-
 Route::get('/attendance/start', [IndexController::class, 'startAttendance'])->middleware(LoginMiddleware::class);
 Route::get('/attendance/end', [IndexController::class, 'endAttendance'])->middleware(LoginMiddleware::class);
-
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'registUser']);
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginUser'])->name('loginUser');
-
-
+Route::get('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'loginUser']);
 Route::get('/logout', [AuthController::class, 'logout'])->middleware(LoginMiddleware::class);
 Route::get('/attendance/{num}', [AttendanceController::class, 'pageAttendance'])->middleware(LoginMiddleware::class);;
 Route::get('/rest/start', [RestController::class, 'startRest'])->middleware(LoginMiddleware::class);

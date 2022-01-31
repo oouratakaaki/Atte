@@ -20,30 +20,17 @@ class Rest extends Model
         'start_rest',
         'end_rest',
     ];
-    /*
-    public function attendance()
-    {
-        return $this->belongsTo(Attendance::class);
-    }
-*/
+
+
+
     public function startRest()
     {
-        return $this->start_rest;
+        $start_rest = $this->start_rest->format('H:i:s');
+        return  $start_rest;
     }
     public function endRest()
     {
-        return $this->end_rest;
-    }
-    public function Rest()
-    {
-        $start_rest = $this->startRest();
-        $end_rest = $this->endRest();
-
-        $rest = $end_rest ->diffInSeconds($start_rest);
-        $hours = floor($rest / 3600); //時間
-        $minutes = floor(($rest / 60) % 60); //分
-        $seconds = floor($rest % 60); //秒
-        $hms = sprintf("%2d:%02d:%02d", $hours, $minutes, $seconds);
-        return $hms;
+        $end_rest = $this->end_rest->format('H:i:s');
+        return  $end_rest;
     }
 }

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Rest;
+use Carbon\Carbon;
+
 
 class Attendance extends Model
 {
@@ -19,8 +22,7 @@ class Attendance extends Model
     protected $dates = [
         'start_attendance',
         'end_attendance',
-        'start_rest',
-        'end_rest',
+
     ];
 
 
@@ -28,69 +30,82 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function rests()
+    public function rest()
     {
         return $this->hasMany(Rest::class);
     }
 
-    /*
-    public function getTitle()
-    {
-        return  optional($this->user)->name;
-    }
-    */
-    public function atteStart()
-    {
-        return  $this->start_attendance;
-    }
+    //勤務開始時間取得->blade
     public function atteStartTime()
     {
         $atteStart = $this->start_attendance->format('H:i:s');
         return $atteStart;
     }
 
-    public function atteEnd()
-    {
-        return  $this->end_attendance;
-    }
+    //勤務終了時間取得->blade
     public function atteEndTime()
     {
-        $atteEnd = $this->end_attendance->format('H:i:s');
+        $atteEnd = $this->end_attendance;
+        if($atteEnd!=null)
+        $atteEnd = $atteEnd->format('H:i:s');
         return $atteEnd;
     }
 
-    public function getAtte()
-    {
-        $start_attendance = $this -> atteStart();
-        $end_attendance = $this -> atteEnd();
-        //勤務時間の差->秒
-        $Atte = $start_attendance ->diffInSeconds($end_attendance);
-        //秒->時:分:秒に変更
-        $hours = floor($Atte / 3600); //時間
-        $minutes = floor(($Atte / 60) % 60); //分
-        $seconds = floor($Atte % 60); //秒
-        $hms = sprintf("%2d:%02d:%02d",$hours,$minutes,$seconds);
-        return  $hms;
-    }
-
-
-
-/*
+    //休憩時間->秒
     public function totalRest()
     {
-        $start = optional($this->rest)->start_rest;
-        $end = optional($this->rest)->end_rest;
+        //restsテーブルのデータ取得
+        $rest = $this->rest;
+        if(isset($rest)){
+            //取得データをカウント
+            $count = count($rest);
+            //start,endを0にセット
+            $startRestTotal=0;
+            $endRestTotal = 0;
+            for($i=0; $i<$count; $i++){
+                if(isset($rest)){
+                    $startRest=($rest[$i]->start_rest->format('H')*3600)+($rest[$i]->start_rest->format('i') * 60)+ ($rest[$i]->start_rest->format('s'));
+                    $endRest = ($rest[$i]->end_rest->format('H') * 3600) + ($rest[$i]->end_rest->format('i') * 60) + ($rest[$i]->end_rest->format('s'));
+                }
+                $startRestTotal=$startRest+$startRestTotal;
+                $endRestTotal = $endRest + $endRestTotal;
 
-        //$rest = $start ->diffInSeconds($end);
-        /*
-        $hours = floor($rest / 3600); //時間
-        $minutes = floor(($rest / 60) % 60); //分
-        $seconds = floor($rest % 60); //秒
-        $hms = sprintf("%2d:%02d:%02d", $hours, $minutes, $seconds);
-        
-        return  $start;//$end;
-        
-    }*/
-    
+                return $totalRest =$endRestTotal - $startRestTotal;
+            }
+        }
+    }
+
+    //休憩時間を秒を（時:分:秒）に変更
+    public function restTime(){
+
+        $totalRest = $this->totalRest();
+
+        $hours = floor($totalRest / 3600);
+        $minutes = floor(($totalRest / 60) % 60);
+        $seconds = floor($totalRest % 60);
+        $totalRest = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+        return  $totalRest;
+    }
+
+    //勤務時間
+    public function totalAtte()
+    {
+        //勤務休憩テータ取得
+        $start_attendance = $this -> start_attendance;
+        $end_attendance = $this -> end_attendance;;
+        $totalRest = $this -> totalRest();
+
+        //勤務開始と終了の差->秒
+        $totalAtte = $start_attendance->diffInSeconds($end_attendance);
+        //勤怠時間計算
+        $Atte =$totalAtte - $totalRest;
+
+        //秒を（時:分:秒）に変更
+        $hours = floor($Atte / 3600);
+        $minutes = floor(($Atte / 60) % 60);
+        $seconds = floor($Atte % 60);
+        $totalAtte = sprintf("%02d:%02d:%02d",$hours,$minutes,$seconds);
+        return  $totalAtte;
+    }
+
 }
