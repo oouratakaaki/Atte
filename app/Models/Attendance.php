@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Rest;
-use Carbon\Carbon;
 
 
 class Attendance extends Model
@@ -46,8 +45,11 @@ class Attendance extends Model
     public function atteEndTime()
     {
         $atteEnd = $this->end_attendance;
-        if($atteEnd!=null)
+        if($atteEnd!=null){
         $atteEnd = $atteEnd->format('H:i:s');
+        }else{
+            $atteEnd ='- - : - - : - -';
+        }
         return $atteEnd;
     }
 

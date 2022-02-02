@@ -29,7 +29,7 @@ class RegistrRequest extends FormRequest
     {
         return[
         //お名前
-        'name' => 'required|alpha',
+        'name' => 'required|alpha|string',
         //メールアドレス
         'email' => 'required|email|unique:users',
         //パスワード

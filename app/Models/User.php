@@ -52,6 +52,7 @@ class User extends Model
     {
         return $this->hasOne(Attendance::class);
     }
+
     public function name()
     {
         $name = $this->name;

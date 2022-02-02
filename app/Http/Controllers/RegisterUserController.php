@@ -19,11 +19,9 @@ class RegisterUserController extends Controller
         return view('register');
     }
 
-
+    //会員登録
     public function registUser(RegistrRequest $request)
     {
-
-
         $regist = new user();
         $regist ->fill(array_merge($request->all(), ['email','password' => Hash::make($request->password)]));
         $regist -> save();

@@ -1,6 +1,16 @@
+h1,p,div{
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
 .header{
+  min-width: 330px;
   height: 80px;
   line-height: 80px;
+}
+@media screen and (min-width: 481px){
+  .header{
+    min-width: 800px;
+  }
 }
 .Atte_text {
   font-size: 28px;
@@ -9,11 +19,18 @@
 }
 
 .main {
+  min-width: 330px;
   background: #F5F5F5;
   text-align: center;
 }
+@media screen and (min-width: 481px){
+  .main{
+    min-width: 800px;
+  }
+}
 
 .top_text {
+  font-weight: 900;
   padding-top: 30px;
   padding-bottom: 20px;
   font-size: 20px;
@@ -23,7 +40,6 @@
   .top_text{
     padding-top: 80px;
   }
-
 }
 
 .input_box {
@@ -73,6 +89,7 @@ input.input {
     width: 340px;
     height: 45px;
     font-size: 15px;
+    margin-top: 20px;
   }
 }
 
@@ -120,6 +137,7 @@ input.input {
 }
 
 .footer {
+  min-width: 330px;
   text-align: center;
   height: 50px;
   line-height: 50px;
@@ -129,6 +147,7 @@ input.input {
 @media screen and (min-width: 481px){
   .footer{
     font-size: 12px;
+    min-width: 800px;
   }
 
 }

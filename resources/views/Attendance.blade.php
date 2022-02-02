@@ -5,10 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Atte</title>
+  <link href="/css/app.css" rel="stylesheet">
   <link rel="stylesheet" href="{{url('css/reset.css')}}">
   <link rel="stylesheet" href="{{url('css/default.css')}}">
   <link rel="stylesheet" href="{{url('css/attendance.css')}}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Murecho:wght@600&family=Noto+Sans+JP:wght@300;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -31,7 +35,6 @@
   <main class="main">
     @csrf
     <table class="table">
-
       <div class="top_text index">
         <form style="display: inline" action="" method="get">
           <input type="hidden" class="button" name="day" value="{{$day}}">
@@ -65,17 +68,9 @@
       @endforeach
     </table>
 
-    <div class="page">
-      <style>
-        svg.w-5.h-5 {
-          width: 30px;
-          height: 30px;
-        }
-      </style>
-      <p> {{$items->links()}} </p>
+    <div id="page" class="page">
+      <div class='link'>{{$items->appends($pagenate_params)->links() }}</div>
     </div>
-
-
 
   </main>
   <footer class="footer">

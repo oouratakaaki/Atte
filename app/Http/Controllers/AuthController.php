@@ -8,15 +8,13 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-
-
 class AuthController extends Controller
 {
     public function login()
     {
         return view('login');
     }
-
+    //ログイン処理
     public function loginUser(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->get();
@@ -37,15 +35,12 @@ class AuthController extends Controller
         }
     }
 
-
-
+    //ログアウト処理
     public function logout()
     {
         session()->flash('id');
         session()->flash('name');
         session()->flash('email');
-        
-
 
         return redirect('login');
     }

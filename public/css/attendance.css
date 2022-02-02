@@ -1,10 +1,21 @@
-
+h1,p,div,a,li,ul,nav{
+  font-family: 'Noto Sans JP', sans-serif;
+}
+h1{
+  font-weight: 900;
+}
+.main{
+    height: 330px;
+    position: relative;
+  }
 @media screen and (min-width: 481px) {
   .main{
     min-width: 800px;
+    height: 700px;
+    position: relative;
   }
-
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -12,7 +23,7 @@
 
 .header-nav-list {
   display: flex;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .header_nav_item {
@@ -42,6 +53,7 @@
 
 .header_link {
   text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 .header_link:link {
   color: #000000;
@@ -52,13 +64,13 @@
 .index{
   text-align: center;
   font-size: 15px;
-
 }
-input[type="date"]::-webkit-datetime-edit-fields-wrapper{
-  -webkit-appearance: none;
-}
-input[type="date"]::-webkit-clear-button{
-  -webkit-appearance: none;
+.button{
+  background: #FFFFFF;
+  color: 	#00008B;
+  border: 1px #00008B double;
+  width: 30px;
+  margin: 0px 20px 5px 20px;
 }
 @media screen and (min-width: 481px){
   .index {
@@ -84,7 +96,7 @@ input[type="date"]::-webkit-clear-button{
   padding-right: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 12px;
+  font-size: 8px;
   white-space: nowrap;
 }
 @media screen and (min-width: 481px)
@@ -101,7 +113,7 @@ input[type="date"]::-webkit-clear-button{
   padding-right: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 12px;
+  font-size: 8px;
 }
 @media screen and (min-width: 481px)
 {
@@ -111,11 +123,23 @@ input[type="date"]::-webkit-clear-button{
   }
 }
 .page {
-  padding: 30px 0px;
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
 }
+
 @media screen and (min-width: 481px)
 {
   .page {
     padding: 25px 0px 50px 0px;
   }
+}
+input[type="date"]::-webkit-datetime-edit-fields-wrapper{
+  -webkit-appearance: none;
+}
+input[type="date"]::-webkit-clear-button{
+  -webkit-appearance: none;
 }

@@ -23,11 +23,13 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('12345678')
         ];
         User::insert($param);
+
         $param = [
             'name' => 'テスト太郎',
             'email' => '11111111@example.com ',
             'password' => Hash::make('11111111')
         ];
+
         User::insert($param);
 
         $param = [
@@ -49,6 +51,7 @@ class UsersTableSeeder extends Seeder
             'email' => '44444444@example.com ',
             'password' => Hash::make('44444444')
         ];
+
         User::insert($param);
         $param = [
             'name' => 'テスト五郎',
@@ -56,5 +59,40 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('55555555')
         ];
         User::insert($param);
+
+        $param = [
+            'name' => 'テスト六郎',
+            'email' => '55555555@example.com ',
+            'password' => Hash::make('55555555')
+        ];
+        User::insert($param);
+
+        $param = [
+            'name' => 'テスト七郎',
+            'email' => '55555555@example.com ',
+            'password' => Hash::make('55555555')
+        ];
+        User::insert($param);
+        $param = [
+            'name' => 'テスト八郎',
+            'email' => '55555555@example.com ',
+            'password' => Hash::make('55555555')
+        ];
+        User::insert($param);
+
+        $param = [
+            'name' => 'テスト九郎',
+            'email' => '55555555@example.com ',
+            'password' => Hash::make('55555555')
+        ];
+        User::insert($param);
+        $param = [
+            'name' => 'テスト十郎',
+            'email' => '55555555@example.com ',
+            'password' => Hash::make('55555555')
+        ];
+        User::insert($param);
+
+        //user::factory()->count(100)->create();
     }
 }
